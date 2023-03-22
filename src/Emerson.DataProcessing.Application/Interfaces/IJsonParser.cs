@@ -1,5 +1,3 @@
-using Emerson.DataProcessing.Domain.Models;
-
 namespace Emerson.DataProcessing.Application.Interfaces
 {
     public interface IJsonParser

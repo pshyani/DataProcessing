@@ -15,11 +15,11 @@ namespace Emerson.DataProcessing.Application.Helper
                     return JsonSerializer.Deserialize<T>(json);
                 }
             }
-            catch(FileNotFoundException ex)
+            catch (FileNotFoundException ex)
             {
                 throw new FileNotFoundException($"File '{fileName}' is not found", ex);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new InvalidDataException($"File '{fileName}' is not in correct format", ex);
             }

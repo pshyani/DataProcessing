@@ -42,21 +42,21 @@ namespace Emerson.DataProcessing.Test.Unit
             
             var device1 = summarizeDevices.Where(p => p.DeviceName == "Foo1").FirstOrDefault();
             device1.ShouldNotBe(null);
-            device1.FirstReadingDtm.ShouldBe(new DateTime(2023,03,10,10,35,0));
-            device1.LastReadingDtm.ShouldBe(new DateTime(2023,03,22,10,35,0));
-            device1.TemperatureCount.ShouldBe(3);
-            device1.AverageTemperature.ShouldBe(13);
-            device1.HumidityCount.ShouldBe(3);
-            device1.AverageHumdity.ShouldBe(20);
+            device1?.FirstReadingDtm.ShouldBe(new DateTime(2023,03,10,10,35,0));
+            device1?.LastReadingDtm.ShouldBe(new DateTime(2023,03,22,10,35,0));
+            device1?.TemperatureCount.ShouldBe(3);
+            device1?.AverageTemperature.ShouldBe(13);
+            device1?.HumidityCount.ShouldBe(3);
+            device1?.AverageHumdity.ShouldBe(20);
 
             var device2 = summarizeDevices.Where(p => p.DeviceName == "Foo2").FirstOrDefault();
             device2.ShouldNotBe(null);
-            device2.FirstReadingDtm.ShouldBe(new DateTime(2023,03,15,10,35,0));
-            device2.LastReadingDtm.ShouldBe(new DateTime(2023,03,18,10,35,0));
-            device2.TemperatureCount.ShouldBe(2);
-            device2.AverageTemperature.ShouldBe(15.5);
-            device2.HumidityCount.ShouldBe(2);
-            device2.AverageHumdity.ShouldBe(18);
+            device2?.FirstReadingDtm.ShouldBe(new DateTime(2023,03,15,10,35,0));
+            device2?.LastReadingDtm.ShouldBe(new DateTime(2023,03,18,10,35,0));
+            device2?.TemperatureCount.ShouldBe(2);
+            device2?.AverageTemperature.ShouldBe(15.5);
+            device2?.HumidityCount.ShouldBe(2);
+            device2?.AverageHumdity.ShouldBe(18);
         }
 
         [Fact]
