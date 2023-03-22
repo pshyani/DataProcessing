@@ -68,8 +68,8 @@ public class DeviceDataController : ControllerBase
     {
         var jsonString = JsonSerializer.Serialize(result);
 
-        string strFile = AppDomain.CurrentDomain.BaseDirectory +
-                                @"\Json\summarize.json";
+        string strFile = Directory.GetCurrentDirectory() +
+                                @"/Json/summarize.json";
 
         if(System.IO.File.Exists(strFile))
         {
