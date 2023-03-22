@@ -7,13 +7,24 @@ namespace Emerson.DataProcessing.Application.Services
     public class SummarizeData : ISummarizeData
     {
         public List<SummarizeDevice> result;
+
+        private readonly IFoo1Device _foo1Device;
+
+        private readonly IFoo2Device _foo2Device;
+
+        public SummarizeData(IFoo1Device foo1Device, IFoo2Device foo2Device)
+        {
+            _foo1Device = foo1Device;
+            _foo2Device = foo2Device;
+        }
+
         public async Task<IEnumerable<SummarizeDevice>> Get()
         {
             result = new List<SummarizeDevice>();
-
-            var foo1Data = new Foo1Device().Get();
-
-            var foo2Data = new Foo2Device().Get();
+            
+            var foo1Data = _foo1Device.Get();
+            
+            var foo2Data = _foo2Device.Get();
 
             await Task.WhenAll(foo1Data, foo2Data);
 

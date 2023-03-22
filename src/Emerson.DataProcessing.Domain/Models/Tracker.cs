@@ -7,7 +7,7 @@ namespace Emerson.DataProcessing.Domain.Models
         [JsonPropertyName("Id")]
         public int DeviceId { get; set; }
 
-        [JsonPropertyName("Model")]
+        [JsonPropertyName("Model")] 
         public string DeviceName { get; set; }
         public string ShipmentStartDtm { get; set; }
         public List<Sensor> Sensors { get; set; }
