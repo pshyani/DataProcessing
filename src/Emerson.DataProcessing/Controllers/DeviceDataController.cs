@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Emerson.DataProcessing.Application.Interfaces;
 using Emerson.DataProcessing.Application.Models;
 using Emerson.DataProcessing.Domain.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Emerson.DataProcessing.Controllers;
 
