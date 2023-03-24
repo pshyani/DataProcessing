@@ -1,8 +1,10 @@
 using System.Text.Json;
 using Emerson.DataProcessing.Application.Interfaces;
 using Emerson.DataProcessing.Application.Models;
+using Emerson.DataProcessing.Application.Settings;
 using Emerson.DataProcessing.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Emerson.DataProcessing.Controllers;
 
@@ -12,19 +14,20 @@ namespace Emerson.DataProcessing.Controllers;
 public class DeviceDataController : ControllerBase
 {
     private readonly ILogger<DeviceDataController> _logger;
-    private readonly IFoo1Device _foo1Device;
-    private readonly IFoo2Device _foo2Device;
+    private readonly IFooDevice _fooDevice;
     private readonly ISummarizeData _summarizeData;
 
+    private readonly CompanyOptions _companyOptions;
+
     public DeviceDataController(ILogger<DeviceDataController> logger,
-                                IFoo1Device foo1Device,
-                                IFoo2Device foo2Device,
-                                ISummarizeData summarizeData)
+                                IFooDevice fooDevice,
+                                ISummarizeData summarizeData,
+                                IOptions<CompanyOptions> companyOptions)
     {
         _logger = logger;
-        _foo1Device = foo1Device;
-        _foo2Device = foo2Device;
+        _fooDevice = fooDevice;
         _summarizeData = summarizeData;
+        _companyOptions = companyOptions.Value;
     }
 
     [HttpGet("Foo1")]
@@ -32,7 +35,7 @@ public class DeviceDataController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<Foo1>> GetFoo1Data()
     {
-        var foo1 = await _foo1Device.Get();
+        var foo1 = await _fooDevice.Get<Foo1>(_companyOptions.Foo1_Json);
 
         return (foo1 != null) ? Ok(foo1) : NotFound();
     }
@@ -42,7 +45,7 @@ public class DeviceDataController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<Foo1>> GetFoo2Data()
     {
-        var foo2 = await _foo2Device.Get();
+        var foo2 = await _fooDevice.Get<Foo2>(_companyOptions.Foo2_Json);
 
         return (foo2 != null) ? Ok(foo2) : NotFound();
     }
@@ -64,9 +67,9 @@ public class DeviceDataController : ControllerBase
         var jsonString = JsonSerializer.Serialize(result);
 
         string strFile = Directory.GetCurrentDirectory() +
-                                @"/Json/summarize.json";
+                                @"/Json/" + _companyOptions.Summarize_Json;
 
-        if(System.IO.File.Exists(strFile))
+        if (System.IO.File.Exists(strFile))
         {
             System.IO.File.Delete(strFile);
         }

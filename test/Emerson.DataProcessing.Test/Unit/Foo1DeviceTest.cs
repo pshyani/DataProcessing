@@ -10,18 +10,19 @@ public class Foo1DeviceTest
 {
     private readonly IJsonParser _jsonParser;
 
-    private readonly IFoo1Device _foo1Device;
+    private readonly IFooDevice _fooDevice;
     public Foo1DeviceTest()
     {
         _jsonParser = A.Fake<IJsonParser>();
-         _foo1Device = new Foo1Device(this._jsonParser);
+        _fooDevice = new FooDevice(this._jsonParser);
     }
 
     [Fact]
     public async Task When_Device_Data_Is_In_Correct_Format()
     {
         //Arrange
-        Foo1 foo1 = new Foo1(){
+        Foo1 foo1 = new Foo1()
+        {
             CompanyId = 1234,
             CompanyName = "Test",
             Trackers = new List<Tracker>(){
@@ -34,11 +35,11 @@ public class Foo1DeviceTest
             },
         };
 
-         A.CallTo(() => this._jsonParser.ParseJson<Foo1>(A<string>._))
-            .Returns(foo1);
+        A.CallTo(() => this._jsonParser.ParseJson<Foo1>(A<string>._))
+           .Returns(foo1);
 
         //Act
-        var result = await _foo1Device.Get();
+        var result = await _fooDevice.Get<Foo1>("");
 
         //Assert
         result.ShouldNotBe(null);
@@ -53,10 +54,10 @@ public class Foo1DeviceTest
             .Throws(new FileNotFoundException("file not found"));
 
 
-        Foo1Device foo1Device = new Foo1Device(this._jsonParser);
+        var fooDevice = new FooDevice(this._jsonParser);
 
         //Act
-        var exception = await Should.ThrowAsync<FileNotFoundException>(() => foo1Device.Get());
+        var exception = await Should.ThrowAsync<FileNotFoundException>(() => fooDevice.Get<Foo1>(""));
 
         //Assert
         exception.ShouldNotBe(null);
@@ -71,10 +72,10 @@ public class Foo1DeviceTest
             .Throws(new InvalidDataException("file is not in correct format"));
 
 
-        Foo1Device foo1Device = new Foo1Device(this._jsonParser);
+        var fooDevice = new FooDevice(this._jsonParser);
 
         //Act
-        var exception = await Should.ThrowAsync<InvalidDataException>(() => foo1Device.Get());
+        var exception = await Should.ThrowAsync<InvalidDataException>(() => fooDevice.Get<Foo1>(""));
 
         //Assert
         exception.ShouldNotBe(null);

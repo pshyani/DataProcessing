@@ -1,25 +1,28 @@
 using Emerson.DataProcessing.Application.Interfaces;
 using Emerson.DataProcessing.Application.Models;
 using Emerson.DataProcessing.Application.Services;
+using Emerson.DataProcessing.Application.Settings;
 using Emerson.DataProcessing.Domain.Models;
 using FakeItEasy;
+using Microsoft.Extensions.Options;
 using Shouldly;
 
 namespace Emerson.DataProcessing.Test.Unit
 {
     public class SummarizeDataTest
     {
-        private readonly IFoo1Device _foo1Device;
-
-        private readonly IFoo2Device _foo2Device;
+        private readonly IFooDevice _fooDevice;
 
         private readonly ISummarizeData _summarizeData;
+
+        private readonly IOptions<CompanyOptions> _companyOptions; 
         public SummarizeDataTest()
         {
-            _foo1Device = A.Fake<IFoo1Device>();
-            _foo2Device = A.Fake<IFoo2Device>();
+            _fooDevice = A.Fake<IFooDevice>();
 
-            _summarizeData = new SummarizeData(_foo1Device, _foo2Device);
+            _companyOptions = A.Fake<IOptions<CompanyOptions>>();
+
+            _summarizeData = new SummarizeData(_fooDevice, _companyOptions);
         }
 
         [Fact]
@@ -29,10 +32,10 @@ namespace Emerson.DataProcessing.Test.Unit
             Foo1 foo1 = GetFakeFoo1Data();
             Foo2 foo2 = GetFakeFoo2Data();
 
-            A.CallTo(() => this._foo1Device.Get())
+            A.CallTo(() => this._fooDevice.Get<Foo1>(A<string>._))
                .Returns(foo1);
 
-            A.CallTo(() => this._foo2Device.Get())
+            A.CallTo(() => this._fooDevice.Get<Foo2>(A<string>._))
                .Returns(foo2);
 
             IEnumerable<SummarizeDevice> summarizeDevices = await _summarizeData.Get();
@@ -62,7 +65,7 @@ namespace Emerson.DataProcessing.Test.Unit
         [Fact]
         public async Task When_Device_Throw_Exception_Should_Return_null()
         {
-            A.CallTo(() => this._foo1Device.Get())
+            A.CallTo(() => this._fooDevice.Get<Foo1>(A<string>._))
                .Throws(new InvalidDataException("file 1 is not in correct format"));
 
             var exception = await Should.ThrowAsync<InvalidDataException>(() => _summarizeData.Get());

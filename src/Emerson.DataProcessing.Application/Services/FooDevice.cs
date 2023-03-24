@@ -1,18 +1,17 @@
 using Emerson.DataProcessing.Application.Interfaces;
-using Emerson.DataProcessing.Domain.Models;
 
 namespace Emerson.DataProcessing.Application.Services
 {
-    public class Foo2Device : IFoo2Device
+    public class FooDevice : IFooDevice
     {
         private readonly IJsonParser _jsonParser;
-        public Foo2Device(IJsonParser jsonParser)
+        public FooDevice(IJsonParser jsonParser)
         {
             _jsonParser = jsonParser;
         }
-        public async Task<Foo2> Get()
+        public async Task<T> Get<T>(string deviceDataFile)
         {
-            return await _jsonParser.ParseJson<Foo2>("DeviceDataFoo2.json");
+            return await _jsonParser.ParseJson<T>(deviceDataFile);
         }
     }
 }

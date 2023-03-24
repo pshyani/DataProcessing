@@ -10,11 +10,11 @@ namespace Emerson.DataProcessing.Test.Unit
     {
         private readonly IJsonParser _jsonParser;
 
-        private readonly IFoo2Device _foo2Device;
+        private readonly IFooDevice _foo2Device;
         public Foo2DeviceTest()
         {
             this._jsonParser = A.Fake<IJsonParser>();
-            this._foo2Device = new Foo2Device(this._jsonParser);
+            this._foo2Device = new FooDevice(this._jsonParser);
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace Emerson.DataProcessing.Test.Unit
                .Returns(foo2);
 
             //Act
-            var result = await _foo2Device.Get();
+            var result = await _foo2Device.Get<Foo2>("");
 
             //Assert
             result.ShouldNotBe(null);
@@ -54,10 +54,10 @@ namespace Emerson.DataProcessing.Test.Unit
                 .Throws(new FileNotFoundException("file not found"));
 
 
-            Foo2Device foo2Device = new Foo2Device(this._jsonParser);
+            var foo2Device = new FooDevice(this._jsonParser);
 
             //Act
-            var exception = await Should.ThrowAsync<FileNotFoundException>(() => foo2Device.Get());
+            var exception = await Should.ThrowAsync<FileNotFoundException>(() => foo2Device.Get<Foo2>(""));
 
             //Assert
             exception.ShouldNotBe(null);
@@ -72,10 +72,10 @@ namespace Emerson.DataProcessing.Test.Unit
                 .Throws(new InvalidDataException("file is not in correct format"));
 
 
-            Foo2Device foo2Device = new Foo2Device(this._jsonParser);
+            var foo2Device = new FooDevice(this._jsonParser);
 
             //Act
-            var exception = await Should.ThrowAsync<InvalidDataException>(() => foo2Device.Get());
+            var exception = await Should.ThrowAsync<InvalidDataException>(() => foo2Device.Get<Foo2>(""));
 
             //Assert
             exception.ShouldNotBe(null);

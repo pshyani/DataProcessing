@@ -1,6 +1,8 @@
 using Emerson.DataProcessing.Application.Interfaces;
 using Emerson.DataProcessing.Application.Models;
+using Emerson.DataProcessing.Application.Settings;
 using Emerson.DataProcessing.Domain.Models;
+using Microsoft.Extensions.Options;
 
 namespace Emerson.DataProcessing.Application.Services
 {
@@ -8,23 +10,23 @@ namespace Emerson.DataProcessing.Application.Services
     {
         public List<SummarizeDevice> result;
 
-        private readonly IFoo1Device _foo1Device;
+        private readonly IFooDevice _fooDevice;
 
-        private readonly IFoo2Device _foo2Device;
+        private readonly CompanyOptions _companyOptions;
 
-        public SummarizeData(IFoo1Device foo1Device, IFoo2Device foo2Device)
+        public SummarizeData(IFooDevice fooDevice, IOptions<CompanyOptions> companyOptions)
         {
-            _foo1Device = foo1Device;
-            _foo2Device = foo2Device;
+            _fooDevice = fooDevice;
+            _companyOptions = companyOptions.Value;
         }
 
         public async Task<IEnumerable<SummarizeDevice>> Get()
         {
             result = new List<SummarizeDevice>();
             
-            var foo1Data = _foo1Device.Get();
+            var foo1Data = _fooDevice.Get<Foo1>(_companyOptions.Foo1_Json);
             
-            var foo2Data = _foo2Device.Get();
+            var foo2Data = _fooDevice.Get<Foo2>(_companyOptions.Foo2_Json);
 
             await Task.WhenAll(foo1Data, foo2Data);
 

@@ -26,6 +26,9 @@
     <ProjectReference Include="..\..\src\Emerson.DataProcessing\Emerson.DataProcessing.csproj" />
     <ProjectReference Include="..\..\src\Emerson.DataProcessing.Application\Emerson.DataProcessing.Application.csproj" />
     <ProjectReference Include="..\..\src\Emerson.DataProcessing.Domain\Emerson.DataProcessing.Domain.csproj" />
-  
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
   </ItemGroup>
 </Project>
