@@ -13,6 +13,7 @@ namespace Emerson.DataProcessing.Controllers;
 [Produces("application/json")]
 public class DeviceDataController : ControllerBase
 {
+    private readonly string _jsonPath = "Json";
     private readonly ILogger<DeviceDataController> _logger;
     private readonly IFooDevice _fooDevice;
     private readonly ISummarizeData _summarizeData;
@@ -66,8 +67,8 @@ public class DeviceDataController : ControllerBase
     {
         var jsonString = JsonSerializer.Serialize(result);
 
-        string strFile = Directory.GetCurrentDirectory() +
-                                @"/Json/" + _companyOptions.Summarize_Json;
+        string strFile = string.Concat(Directory.GetCurrentDirectory(),
+                                "/", _jsonPath, "/", _companyOptions.Summarize_Json);
 
         if (System.IO.File.Exists(strFile))
         {
